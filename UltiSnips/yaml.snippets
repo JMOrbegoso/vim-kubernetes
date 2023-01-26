@@ -227,13 +227,6 @@ metadata:
   name: ${1:name}
 endsnippet
 
-snippet sa "ServiceAccount" !b
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: ${1:name}
-endsnippet
-
 snippet ingtls "Ingress TLS section" !b
 tls:
 - secretName: ${2:$1.tls}
@@ -510,61 +503,42 @@ annotations:
   external-dns.alpha.kubernetes.io/hostname: ${1:myname.mydomain.com}
 endsnippet
 
+snippet sa "ServiceAccount" !b
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ${1:jane}
+  namespace: ${2:default}
+endsnippet
+
 snippet role "Role" !b
 kind: ${1:Cluster}Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  ${2:namespace: ${3:default}
-  }name: ${4:configmap-updater}
+  name: ${4:configmap-updater}
+  ${2:namespace: ${3:default}}
 rules:
-- apiGroups: ["${5:}"]
-  resources: ["${6:configmaps}"]
-  resourceNames: ["${7:my-configmap}"]
-  verbs: [${8:"update", "get"}]
+- apiGroups: [""] # Empty means that everything is allowed
+  resources: ["${5:configmaps}"]
+  ${6:resourceNames: ["${7:my-configmap}"]
+  }verbs: [${8:"get", }${9:"list", }${10:"create", }${11:"update", }${12:"patch", }${13:"watch", }${14:"delete", }${15:"deletecollection"}]
 endsnippet
 
 snippet rb "RoleBinding" !b
-# This role binding allows "jane" to read pods in the "default" namespace.
+# Test: k auth -n default --as system:serviceaccount:default:jane can-i create pods
 kind: ${1:Cluster}RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ${2:read-pods}
-  ${3:namespace: ${4:pods}
-}subjects:
-- kind: ${5:User|ServiceAccount|Group}
-  name: ${6:jane} # Name is case sensitive
-  apiGroup: rbac.authorization.k8s.io
-roleRef:
-  kind: ${7:Cluster}Role #this must be Role or ClusterRole
-  name: ${8:pod-reader} # this must match the name of the Role or ClusterRole you wish to bind to
-  apiGroup: rbac.authorization.k8s.io
-endsnippet
-
-snippet rbac "Role and Binding" !b
-kind: ${1:Cluster}Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  ${2:namespace: ${3:default}
-  }name: ${4:configmap-updater}
-rules:
-- apiGroups: ["${5:}"]
-  resources: ["${6:configmaps}"]
-  resourceNames: ["${7:my-configmap}"]
-  verbs: [${8:"update", "get"}]
----
-# This role binding allows "jane" to read pods in the "default" namespace.
-kind: ${9:Cluster}RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: $4
-  $2
+  name: ${4:read-pods}
+  ${2:namespace: ${3:pods}}
 subjects:
-- kind: ${10:User|ServiceAccount|Group}
-  name: ${11:jane} # Name is case sensitive
-  apiGroup: rbac.authorization.k8s.io
+- kind: ${5:User|ServiceAccount|Group}
+  name: ${6:jane}
+  apiGroup: ""
+  namespace: ${7:default}
 roleRef:
-  kind: $1Role #this must be Role or ClusterRole
-  name: $4 # this must match the name of the Role or ClusterRole you wish to bind to
+  kind: ${8:Cluster}Role
+  name: ${9:pod-reader}
   apiGroup: rbac.authorization.k8s.io
 endsnippet
 
