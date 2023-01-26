@@ -740,3 +740,108 @@ snippet tol "Toleration" !b
   effect: ${4:NoSchedule}
 $0
 endsnippet
+
+snippet pdt "Pod Template" !b
+metadata:
+  labels:
+    app: busybox
+spec:
+  restartPolicy: Always
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    imagePullPolicy: Always
+    command: ['sh', '-c', 'echo "Hello, Kubernetes!" "$(SPECIAL_LEVEL_KEY)" && sleep 3600']
+    ports:
+    - containerPort: 80
+    - name: liveness-port
+      containerPort: 8080
+      hostPort: 8080
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200Mi
+      limits:
+        cpu: 250m
+        memory: 500Mi
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: liveness-port
+      failureThreshold: 30
+      periodSeconds: 10
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    envFrom:
+    - configMapRef:
+      # Define all of the ConfigMap's data as container environment variables, the key from the ConfigMap becomes the environment variable name in the Pod
+      name: helper-config
+    env:
+    - name: ENV_USERNAME
+      value: guest
+    - name: SECRET_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: password
+          optional: false
+    - name: SPECIAL_LEVEL_KEY
+      valueFrom:
+        configMapKeyRef:
+          name: special-config
+          key: SPECIAL_LEVEL
+          optional: true
+    volumeMounts:
+    - name: foo-config-volume
+      mountPath: /etc/config/foo
+    - name: bar-config-volume
+      mountPath: /etc/config/bar # ConfigMap available at /etc/config/bar/logs/log_level
+    - name: foo-secret-volume
+      mountPath: "/etc/secret/foo"
+      readOnly: true
+    - name: bar-secret-volume
+      mountPath: "/etc/secret/bar" # Secret available at /etc/secret/bar/my-group/my-username
+      readOnly: true
+    - name: redis-storage
+      mountPath: /data/redis
+    - name: test-volume
+      mountPath: /test-pd
+  volumes:
+  - name: foo-config-volume
+    configMap:
+      name: foo-config
+  - name: bar-config-volume
+    configMap:
+      name: bar-config
+      items:
+        - key: LOG_LEVEL
+          path: logs/log_level
+  - name: foo-secret-volume
+    secret:
+      secretName: foo-secret
+      optional: false
+  - name: bar-secret-volume
+    secret:
+      secretName: bar-secret
+      items:
+      - key: username
+        path: my-group/my-username
+  - name: redis-storage
+    emptyDir: {}
+  - name: test-volume
+    hostPath:
+      path: /data # Location on host
+      type: Directory # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
+endsnippet
