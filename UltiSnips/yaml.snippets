@@ -28,12 +28,6 @@ spec:
 
 endsnippet
 
-snippet selm "Selector MatchLabels" !b
-selector:
-  matchLabels:
-    $0
-endsnippet
-
 snippet svc "Service" !b
 apiVersion: v1
 kind: Service
@@ -243,13 +237,6 @@ metadata:
 
 endsnippet
 
-snippet ingtls "Ingress TLS section" !b
-tls:
-- secretName: ${2:$1.tls}
-  hosts:
-  - ${1:host}
-endsnippet
-
 snippet cfg "ConfigMap" !b
 apiVersion: v1
 kind: ConfigMap
@@ -271,24 +258,6 @@ data:
   ${3:key}: ${4:value}
 ---
 
-endsnippet
-
-snippet env "Environment template" !b
-- name: ${1:VAR_NAME}
-  value: ${2:value}
-endsnippet
-
-snippet secref "env SecretRef" !b
-valueFrom:
-  secretKeyRef:
-    name: ${1:secret-name}
-    key: ${2:key-name}
-endsnippet
-
-snippet pvol "Pod Volume Object"
-- name: ${1:name}
-  ${2:source}:
-    name:
 endsnippet
 
 snippet job "Kubernetes Job" !b
@@ -339,13 +308,6 @@ spec:
 
 endsnippet
 
-snippet skr "SecretKeyRef"
-valueFrom:
-  secretKeyRef:
-    name: ${1:secret}
-    key: ${2:key}
-endsnippet
-
 snippet cert "cert-manager certificate" !b
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -369,7 +331,6 @@ spec:
 
 endsnippet
 
-
 snippet netp "NetworkPolicy" !b
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
@@ -386,15 +347,6 @@ spec:
           ${5:$4}: ${6:"true"}
 ---
 
-endsnippet
-
-snippet probe "Liveness/Readiness Probes" !b
-livenessProbe: &probe
-  initialDelaySeconds: ${1:10}
-  httpGet:
-    port: ${2:8080}
-    path: ${3:/}
-readinessProbe: *probe $0
 endsnippet
 
 snippet ss "StatefulSet" !b
@@ -485,54 +437,6 @@ spec:
           storage: ${10:1G}
 ---
 
-endsnippet
-
-snippet res "Resources" !b
-resources:
-  requests:
-    cpu: ${1:100m}
-    memory: ${2:200Mi}
-  ${5:limits:
-    cpu: ${3:$1}
-    memory: ${4:$2}}$0
-endsnippet
-
-snippet init "Init Container" !b
-initContainers:
-- name: ${1:myinit}
-  image: ${2:busybox}
-  command: [${3:rm, -rf,  $5/lost+found}]
-  ${6:volumeMounts:
-  - name: ${4:data}
-    mountPath: ${5:/data}}$0
-endsnippet
-
-snippet strat "Deployment Strategy" !b
-strategy:
-  type: ${1:RollingUpdate|Recreate}
-  rollingUpdate:
-    maxSurge: ${2:1}
-    maxUnavailable: ${3:1}$0
-endsnippet
-
-snippet atls "tls-acme annotations" !b
-annotations:
-  kubernetes.io/tls-acme: "true"
-endsnippet
-
-snippet vtls "tls-vault annotations" !b
-annotations:
-  kubernetes.io/tls-vault: "true"
-endsnippet
-
-snippet cmtls "cert-manager tls annotations" !b
-${2:annotations:
-  }cert-manager.io/cluster-issuer: ${1:lets-encrypt}
-endsnippet
-
-snippet edns "external dns" !b
-annotations:
-  external-dns.alpha.kubernetes.io/hostname: ${1:myname.mydomain.com}
 endsnippet
 
 snippet sa "ServiceAccount" !b
@@ -682,49 +586,6 @@ spec:
 
 endsnippet
 
-snippet pvolm "Volume Mount and spec" !b
-  volumeMounts:
-  - name: ${1:volume}
-    mountPath: ${2:/etc/mount/path}
-    ${3:subPath: ${4: key}}
-volumes:
-- name: $1
-  ${5:configMap}:
-    ${6:name}: ${7:someName}
-endsnippet
-
-snippet volm "Volume Mount" !b
-- name: ${1:volume}
-  mountPath: ${2:/etc/mount/path}
-  ${3:subPath: ${4: key}}
-$0
-endsnippet
-
-snippet prom "Prometheus annotations" !b
-annotations:
-  prometheus.io/scrape: "true"
-  prometheus.io/endpoint: "${1:/metrics}"
-  prometheus.io/port: "${2:8080}"
-endsnippet
-
-snippet ingn "nginx ingress class annotation" !b
-kubernetes.io/ingress.class: nginx
-endsnippet
-
-snippet aff "Affinitiy/Anti-Affinity" !b
-pod${1:Anti}Affinity:
-  ${2:preferred|required}DuringSchedulingIgnoredDuringExecution:
-  - weight: 100
-    podAffinityTerm:
-      labelSelector:
-        matchExpressions:
-        - key: ${3:app}
-          operator: In
-          values:
-          - ${4:appname}
-      topologyKey: ${5:kubernetes.io/hostname}
-endsnippet
-
 snippet ds "DaemonSet" !b
 apiVersion: apps/v1
 kind: DaemonSet
@@ -753,14 +614,6 @@ spec:
 $0
 ---
 
-endsnippet
-
-snippet tol "Toleration" !b
-- key: ${1:kubernetes.azure.com/scalesetpriority}
-  operator: ${2:Equal}
-  value: ${3:spot}
-  effect: ${4:NoSchedule}
-$0
 endsnippet
 
 snippet pdt "Pod Template" !b
