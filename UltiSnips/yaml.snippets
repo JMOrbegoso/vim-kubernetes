@@ -92,28 +92,27 @@ snippet ing "Ingress" !b
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
   name: ${1:name}
   namespace: ${2:default}
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
-  ${5:tls:
-  - secretName: ${4:$3.tls}
+  ingressClassName: nginx
+  ${6:tls:
+  - secretName: ${7:tls-secret}
     hosts:
-    - $3
+    - $8
   }rules:
-  - host: ${3:host.tld}
+  - host: ${8:host.com}
     http:
       paths:
-      - path: ${7:/}
+      - path: ${9:/}
         pathType: Prefix
         backend:
           service:
-            name: ${8:service}
+            name: ${10:service}
             port:
-              number: ${9:portNumberOrName}
+              number: ${11:8080 # same as Service.spec.ports[x].port}
 ---
 
 endsnippet
