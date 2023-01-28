@@ -242,9 +242,17 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ${1:name}
-data:
-  ${2:key}: ${3:value}
----
+  namespace: ${2:default}
+${3:data:
+  key: value # --from-literal
+  file.json: | # --from-file
+    {
+    "array": [1,2,3]
+    }
+}${4:binaryData:
+  trustore.jks: |-
+    binary data in base64
+}---
 
 endsnippet
 
