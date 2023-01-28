@@ -34,16 +34,17 @@ kind: Service
 metadata:
   name: ${1:frontend}
   namespace: ${2:default}
-  labels:
-    app: ${3:someApp}
-    tier: ${4:frontend}
 spec:
+  type: ${5:ClusterIP}${6:NodePort}${7:LoadBalancer}${8:ExternalName}
+  ${9:clusterIP: None # can be auto generated, none=headless
+  }${10:externalName: vim.com
+  }selector: # not used in type externalName
+    app.kubernetes.io/name: ${11:busybox}
   ports:
-  - port: ${5:80}
-  selector:
-    app: $3
-    tier: $4
----
+  - port: ${12:80 # service port}
+    targetPort: ${13: # container port}
+    ${14:nodePort: 30007
+}---
 
 endsnippet
 
