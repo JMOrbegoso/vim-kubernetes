@@ -39,30 +39,27 @@ au FileType yaml nmap <leader>r :KubeApply<CR>
 
 ## Snippets
 
-| Resource                         | snippet   |
-| -------------------------------- | --------- |
-| Cert-Manager Certificate         | cert      |
-| ConfigMap                        | cfg       |
-| DaemonSet                        | ds        |
-| Deployment                       | dep       |
-| Deployment and service           | depsvc    |
-| Deployment, service, and ingress | depsvcing |
-| HorizontalPodAutoscaler v1       | hpa1      |
-| HorizontalPodAutoscaler v2       | hpa2      |
-| HorizontalPodAutoscaler v2beta1  | hpa2beta1 |
-| HorizontalPodAutoscaler v2beta2  | hpa2beta2 |
-| Ingress                          | ing       |
-| Kubernetes Cronjob               | cron      |
-| Kubernetes Job                   | job       |
-| Namespace                        | ns        |
-| NetworkPolicy                    | netp      |
-| PersistentVolume                 | pv        |
-| PersistentVolumeClaim            | pvc       |
-| Pod Template                     | pdt       |
-| Role                             | role      |
-| RoleBinding                      | rb        |
-| Secret                           | sec       |
-| Service                          | svc       |
-| ServiceAccount                   | sa        |
-| StatefulSet                      | ss        |
-| StatefulSet and Service          | sssvc     |
+| Resource                        | snippet   |
+| ------------------------------- | --------- |
+| Cert-Manager Certificate        | cert      |
+| ConfigMap                       | cfg       |
+| DaemonSet                       | ds        |
+| Deployment                      | dep       |
+| HorizontalPodAutoscaler v1      | hpa1      |
+| HorizontalPodAutoscaler v2      | hpa2      |
+| HorizontalPodAutoscaler v2beta1 | hpa2beta1 |
+| HorizontalPodAutoscaler v2beta2 | hpa2beta2 |
+| Ingress                         | ing       |
+| Kubernetes Cronjob              | cron      |
+| Kubernetes Job                  | job       |
+| Namespace                       | ns        |
+| NetworkPolicy                   | netp      |
+| PersistentVolume                | pv        |
+| PersistentVolumeClaim           | pvc       |
+| Pod Template                    | pdt       |
+| Role                            | role      |
+| RoleBinding                     | rb        |
+| Secret                          | sec       |
+| Service                         | svc       |
+| ServiceAccount                  | sa        |
+| StatefulSet                     | ss        |
