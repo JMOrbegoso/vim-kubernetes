@@ -8,11 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      $3
+      app.kubernetes.io/name: $1
   template:
     metadata:
       labels:
-        ${3:app: $1}
+        app.kubernetes.io/name: $1
     spec:
       containers:
       - name: ${4:name}
@@ -54,8 +54,7 @@ kind: PersistentVolume
 metadata:
   name: ${1:name}
   labels:
-    app: ${2:app}
-    tier: ${3:tier}
+    app.kubernetes.io/name: ${2:app}
 spec:
   capacity:
     storage: ${4:20Gi}
@@ -74,9 +73,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: ${1:name}
   labels:
-    # insert any desired labels to identify your claim
-    app: ${2:app}
-    tier: ${3:tier}
+    app.kubernetes.io/name: ${2:app}
 spec:
   ${4:storageClassName: ${5:standard}}
   accessModes:
@@ -177,7 +174,7 @@ kind: Job
 metadata:
   name: ${1:jobname}
   labels:
-    ${2:sometag: somevalue}
+    app.kubernetes.io/name: ${2:app}
 spec:
   template:
     metadata:
@@ -268,13 +265,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      $2
+      app.kubernetes.io/name: $1
   serviceName: "nginx"
   replicas: 3 # by default is 1
   template:
     metadata:
       labels:
-        ${2:app: $1}
+        app.kubernetes.io/name: $1
     spec:
       # terminationGracePeriodSeconds: 10
       containers:
@@ -453,15 +450,15 @@ metadata:
   name: ${1:name}
   namespace: ${2:default}
   labels:
-    app: $1
+    app.kubernetes.io/name: $1
 spec:
   selector:
     matchLabels:
-      app: $1
+      app.kubernetes.io/name: $1
   template:
     metadata:
       labels:
-        app: $1
+        app.kubernetes.io/name: $1
     spec:
       containers:
       - name: $1
@@ -479,7 +476,7 @@ endsnippet
 snippet pdt "Pod Template" !b
 metadata:
   labels:
-    app: busybox
+    app.kubernetes.io/name: busybox
 spec:
   restartPolicy: Always
   containers:
