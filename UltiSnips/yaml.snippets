@@ -479,11 +479,16 @@ metadata:
     app.kubernetes.io/name: busybox
 spec:
   restartPolicy: Always
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+    command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
   containers:
   - name: busybox
     image: busybox:1.28
     imagePullPolicy: Always
-    command: ['sh', '-c', 'echo "Hello, Kubernetes!" "$(SPECIAL_LEVEL_KEY)" && sleep 3600']
+    command: ["/bin/echo"]
+    args: ["$(SPECIAL_LEVEL_KEY)"]
     ports:
     - containerPort: 80
     - name: liveness-port
