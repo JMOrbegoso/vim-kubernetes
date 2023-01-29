@@ -42,9 +42,9 @@ au FileType yaml nmap <leader>r :KubeApply<CR>
 | Resource                        | snippet   |
 | ------------------------------- | --------- |
 | Cert-Manager Certificate        | cert      |
-| ConfigMap                       | cfg       |
+| ConfigMap                       | cm        |
 | DaemonSet                       | ds        |
-| Deployment                      | dep       |
+| Deployment                      | deploy    |
 | HorizontalPodAutoscaler v1      | hpa1      |
 | HorizontalPodAutoscaler v2      | hpa2      |
 | HorizontalPodAutoscaler v2beta1 | hpa2beta1 |
