@@ -195,24 +195,30 @@ spec:
 endsnippet
 
 snippet cron "Kubernetes Cronjob" !b
-apiVersion: batch/v2alpha1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: ${1:name}
+  namespace: ${2:namespace}
 spec:
-  schedule: "${2:*/1} * * * *"
+  schedule: "${3:* * * * *}"
   jobTemplate:
     spec:
-      template:
+      backoffLimit: ${4:6 # number of retries before marking this job failed}
+      ${5:ttlSecondsAfterFinished: 1 # seconds to delete job after finish
+      }template:
+        metadata:
+          name: $1
         spec:
+          restartPolicy: ${6:OnFailure|Never}
           containers:
-          - name: $1
-            image: ${3: image}
-            args: ${4:
-            - /bin/sh
-            - -c
-            - date; echo Hello from the Kubernetes cluster}
-          restartPolicy: OnFailure
+          - name: ${7:containerName}
+            image: ${8: image}
+            imagePullPolicy: Always
+            command:
+            - ${9:"override"
+            - "--the"
+            - "entrypoint"}
 ---
 
 endsnippet
