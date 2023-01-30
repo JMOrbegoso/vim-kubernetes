@@ -173,22 +173,23 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: ${1:jobname}
-  labels:
-    app.kubernetes.io/name: ${2:app}
+  namespace: ${2:namespace}
 spec:
-  template:
+  backoffLimit: ${3:6 # number of retries before marking this job failed}
+  ${4:ttlSecondsAfterFinished: 1 # seconds to delete job after finish
+  }template:
     metadata:
       name: $1
     spec:
+      restartPolicy: ${5:OnFailure|Never}
       containers:
-      - name: ${3:containerName}
-        image: ${4: image}
+      - name: ${6:containerName}
+        image: ${7: image}
         imagePullPolicy: Always
         command:
-        - ${5:"override"
+        - ${8:"override"
         - "--the"
         - "entrypoint"}
-      restartPolicy: OnFailure
 ---
 
 endsnippet
