@@ -1,25 +1,26 @@
 # vim-kubernetes
 
-This package provides kubernetes YAML snippets (requires
-[ultisnips](https://github.com/sirver/UltiSnips), as well as a number of
-integrations with kubectl (requires that you actually have kubectl installed and
-on your `PATH`).
+Forked from [andrewstuart/vim-kubernetes](https://github.com/andrewstuart/vim-kubernetes).
 
-## Quick Start
+This package provides kubernetes YAML snippets (requires [ultisnips](https://github.com/sirver/UltiSnips), as well as a number of integrations with kubectl (requires that you actually have kubectl installed and on your `PATH`).
 
-If you are using Vundle, add this to your `~/.vimrc`:
+## Installation
+
+Vim-Plug:
 
 ```vim
-Plugin 'andrewstuart/vim-kubernetes'
+Plug 'JMOrbegoso/vim-kubernetes'
 ```
 
-If you are using pathogen, clone this repo to your `~/.vim/bundle`
+Vundle:
 
-## Current integrations:
+```vim
+Plugin 'JMOrbegoso/vim-kubernetes'
+```
 
-### Functions/Commands
+## Functions/Commands
 
-For the current buffer (including modifications not on disk)
+For the current buffer (including modifications not saved on disk)
 
 - `:KubeApply`
 - `:KubeDelete`
